@@ -3,7 +3,7 @@ class InitPlugin extends DBMigration
 {
     function up()
     {
-        DBManager::exec("
+        DBManager::get()->exec("
             CREATE TABLE IF NOT EXISTS `rtc_rooms` (
                 `room_id` varchar(32) NOT NULL,
                 `seminar_id` varchar(32) DEFAULT NULL,
@@ -18,7 +18,7 @@ class InitPlugin extends DBMigration
             CREATE TABLE IF NOT EXISTS `rtc_users` (
                 `room_id` varchar(32) NOT NULL,
                 `user_id` varchar(32) NOT NULL,
-                `webrtc` tinyint(4) NOT NULL,
+                `webrtc` tinyint(4) NOT NULL DEFAULT '0',
                 `chdate` int(11) NOT NULL,
                 `mkdate` int(11) NOT NULL,
                 PRIMARY KEY (`room_id`,`user_id`)
@@ -40,7 +40,8 @@ class InitPlugin extends DBMigration
     }
     
     function down() {
-        DBManager::get()->exec("DROP TABLE IF EXISTS `videochat_users` ");
-        DBManager::get()->exec("DROP TABLE IF EXISTS `videochat_connections` ");
+        DBManager::get()->exec("DROP TABLE IF EXISTS `rtc_rooms` ");
+        DBManager::get()->exec("DROP TABLE IF EXISTS `rtc_users` ");
+        DBManager::get()->exec("DROP TABLE IF EXISTS `rtc_connections` ");
     }
 }
