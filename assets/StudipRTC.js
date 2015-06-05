@@ -12,6 +12,7 @@ STUDIP.StudipRTC = {
                 var room_id = jQuery(this).data("room_id");
                 output.rooms[room_id] = 1;
             });
+            window.setTimeout(function () { jQuery(document).trigger("click"); }, 1000);
             return output;
         }
     },
