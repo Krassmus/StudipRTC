@@ -43,7 +43,7 @@ class RTCRoom extends SimpleORMap {
     }
 
     public function cleanup() {
-        RTCUser::deleteBySQL("room_id = ? and chdate < UNIX_TIMESTAMP() - 60 * 1", array($this->getId()));
+        RTCUser::deleteBySQL("room_id = ? and chdate < UNIX_TIMESTAMP() - 30", array($this->getId()));
         return $this;
     }
 }

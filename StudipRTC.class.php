@@ -10,6 +10,7 @@ class StudipRTC extends StudIPPlugin implements SystemPlugin {
     {
         parent::__construct();
         PageLayout::addScript($this->getPluginURL()."/assets/StudipRTC.js");
+        $this->addStylesheet('assets/StudipRTC.less');
         if (UpdateInformation::isCollecting() && UpdateInformation::hasData("StudipRTC")) {
             $data = UpdateInformation::getData("StudipRTC");
             if ($data) {
@@ -21,10 +22,17 @@ class StudipRTC extends StudIPPlugin implements SystemPlugin {
 
                     $room = new RTCRoom($room_id);
                     $room->cleanup();
+
+                    $output['rooms'][$room_id]['user'] = array();
+
                     foreach ($room->users as $roomuser) {
                         if ($roomuser['user_id'] !== $GLOBALS['user']->id) {
-                            $output[$room_id]['users'][$roomuser['user_id']] = array(
-                                'name' => get_fullname($roomuser['user_id'])
+                            $template_factory = new Flexi_TemplateFactory(__DIR__."/views");
+                            $template = $template_factory->open("rooms/_user.php");
+                            $template->set_attribute("user", $roomuser);
+                            $output['rooms'][$room_id]['user'][$roomuser['user_id']] = array(
+                                'name' => get_fullname($roomuser['user_id']),
+                                'html' => $template->render()
                             );
                         }
                     }

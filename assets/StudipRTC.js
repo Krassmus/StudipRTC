@@ -16,6 +16,11 @@ STUDIP.StudipRTC = {
         }
     },
     updateRooms: function (data) {
-
+        for (var room_id in data.rooms) {
+            jQuery(".rtc_room_" + room_id).html('');
+            for (var user_id in data.rooms[room_id].user) {
+                jQuery(".rtc_room_" + room_id).append(data.rooms[room_id].user[user_id].html);
+            }
+        }
     }
 };
